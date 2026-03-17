@@ -1,0 +1,56 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hierx"
+version = "0.1.1"
+description = "Hierarchical cost and interaction matrices for large-scale spatial networks"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+authors = [
+    {name = "Alexander Hellervik", email = "alexander.hellervik@chalmers.se"},
+    {name = "Joakim Bohlin", email = "joakim.bohlin@chalmers.se"},
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "networkx>=2.6",
+    "numpy>=1.21",
+    "scipy>=1.7",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0", "ruff>=0.4"]
+plot = ["matplotlib>=3.5"]
+hdf5 = ["h5py>=3.0"]
+
+[tool.setuptools.packages.find]
+include = ["hierx*"]
+
+[project.urls]
+Homepage = "https://github.com/hierx/hierx"
+Repository = "https://github.com/hierx/hierx"
+Issues = "https://github.com/hierx/hierx/issues"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+exclude = [".claude/"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]

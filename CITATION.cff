@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+title: "hierx: Hierarchical cost and interaction matrices for spatial networks"
+message: "If you use this software, please cite it as below."
+type: software
+authors:
+  - given-names: Alexander
+    family-names: Hellervik
+    email: alexander.hellervik@chalmers.se
+    affiliation: Chalmers University of Technology
+  - given-names: Joakim
+    family-names: Bohlin
+    email: joakim.bohlin@chalmers.se
+    affiliation: Chalmers University of Technology
+  - given-names: Claes
+    family-names: Andersson
+    email: claeand@chalmers.se
+    affiliation: Chalmers University of Technology
+version: 0.1.1
+license: MIT
+url: "https://github.com/hierx/hierx"
+repository-code: "https://github.com/hierx/hierx"
+keywords:
+  - spatial networks
+  - accessibility
+  - hierarchical matrices
+  - transport modeling
