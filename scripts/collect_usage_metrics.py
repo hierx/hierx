@@ -39,9 +39,7 @@ def request_json(
     timeout: int = 45,
 ) -> Any:
     headers = {
-        "Accept": "application/vnd.github+json"
-        if "api.github.com" in url
-        else "application/json",
+        "Accept": "application/vnd.github+json" if "api.github.com" in url else "application/json",
         "User-Agent": USER_AGENT,
     }
     if token:
@@ -55,9 +53,7 @@ def request_json(
     return json.loads(body)
 
 
-def upsert_csv(
-    path: Path, key_fields: tuple[str, ...], rows: Iterable[dict[str, Any]]
-) -> None:
+def upsert_csv(path: Path, key_fields: tuple[str, ...], rows: Iterable[dict[str, Any]]) -> None:
     incoming = list(rows)
     existing: list[dict[str, str]] = []
     if path.exists():
@@ -145,9 +141,7 @@ def fetch_github(
     root = f"https://api.github.com/repos/{repository}"
     repo = request_json(root, token=token)
     releases = request_json(f"{root}/releases", token=token)
-    release = next(
-        (item for item in releases if item.get("tag_name") == RELEASE_TAG), None
-    )
+    release = next((item for item in releases if item.get("tag_name") == RELEASE_TAG), None)
     release_asset_downloads = sum(
         asset.get("download_count", 0) for asset in (release or {}).get("assets", [])
     )
@@ -155,12 +149,8 @@ def fetch_github(
     traffic: dict[str, Any] = {"available": False, "views": None, "clones": None}
     if token:
         try:
-            traffic["views"] = request_json(
-                f"{root}/traffic/views?per=day", token=token
-            )
-            traffic["clones"] = request_json(
-                f"{root}/traffic/clones?per=day", token=token
-            )
+            traffic["views"] = request_json(f"{root}/traffic/views?per=day", token=token)
+            traffic["clones"] = request_json(f"{root}/traffic/clones?per=day", token=token)
             traffic["available"] = True
         except urllib.error.HTTPError as exc:
             if exc.code not in (401, 403, 404):
@@ -206,9 +196,7 @@ def main() -> int:
 
     try:
         version_rows = fetch_version_specific_pypi()
-        upsert_csv(
-            args.output_dir / "pypi_0.1.1_pip_uv_daily.csv", ("date",), version_rows
-        )
+        upsert_csv(args.output_dir / "pypi_0.1.1_pip_uv_daily.csv", ("date",), version_rows)
     except (
         urllib.error.HTTPError,
         urllib.error.URLError,
