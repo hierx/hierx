@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Collect durable usage metrics for HierX 0.1.1.
 
 The script intentionally keeps two PyPI series:
@@ -20,11 +19,10 @@ import json
 import os
 import sys
 import urllib.error
-import urllib.parse
 import urllib.request
+from collections.abc import Iterable
 from pathlib import Path
-from typing import Any, Iterable
-
+from typing import Any
 
 PACKAGE = "hierx"
 PACKAGE_VERSION = "0.1.1"
@@ -41,7 +39,9 @@ def request_json(
     timeout: int = 45,
 ) -> Any:
     headers = {
-        "Accept": "application/vnd.github+json" if "api.github.com" in url else "application/json",
+        "Accept": "application/vnd.github+json"
+        if "api.github.com" in url
+        else "application/json",
         "User-Agent": USER_AGENT,
     }
     if token:
@@ -55,7 +55,9 @@ def request_json(
     return json.loads(body)
 
 
-def upsert_csv(path: Path, key_fields: tuple[str, ...], rows: Iterable[dict[str, Any]]) -> None:
+def upsert_csv(
+    path: Path, key_fields: tuple[str, ...], rows: Iterable[dict[str, Any]]
+) -> None:
     incoming = list(rows)
     existing: list[dict[str, str]] = []
     if path.exists():
@@ -137,18 +139,28 @@ def fetch_version_specific_pypi() -> list[dict[str, Any]]:
     ]
 
 
-def fetch_github(repository: str, token: str | None) -> tuple[dict[str, Any], list[dict[str, Any]], dict[str, Any]]:
+def fetch_github(
+    repository: str, token: str | None
+) -> tuple[dict[str, Any], list[dict[str, Any]], dict[str, Any]]:
     root = f"https://api.github.com/repos/{repository}"
     repo = request_json(root, token=token)
     releases = request_json(f"{root}/releases", token=token)
-    release = next((item for item in releases if item.get("tag_name") == RELEASE_TAG), None)
-    release_asset_downloads = sum(asset.get("download_count", 0) for asset in (release or {}).get("assets", []))
+    release = next(
+        (item for item in releases if item.get("tag_name") == RELEASE_TAG), None
+    )
+    release_asset_downloads = sum(
+        asset.get("download_count", 0) for asset in (release or {}).get("assets", [])
+    )
 
     traffic: dict[str, Any] = {"available": False, "views": None, "clones": None}
     if token:
         try:
-            traffic["views"] = request_json(f"{root}/traffic/views?per=day", token=token)
-            traffic["clones"] = request_json(f"{root}/traffic/clones?per=day", token=token)
+            traffic["views"] = request_json(
+                f"{root}/traffic/views?per=day", token=token
+            )
+            traffic["clones"] = request_json(
+                f"{root}/traffic/clones?per=day", token=token
+            )
             traffic["available"] = True
         except urllib.error.HTTPError as exc:
             if exc.code not in (401, 403, 404):
@@ -184,20 +196,37 @@ def main() -> int:
     try:
         pypi_rows, pypi_recent = fetch_pypistats()
         upsert_csv(args.output_dir / "pypi_overall_daily.csv", ("date",), pypi_rows)
-    except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, ValueError) as exc:
+    except (
+        urllib.error.HTTPError,
+        urllib.error.URLError,
+        TimeoutError,
+        ValueError,
+    ) as exc:
         failures.append(f"pypistats: {exc}")
 
     try:
         version_rows = fetch_version_specific_pypi()
-        upsert_csv(args.output_dir / "pypi_0.1.1_pip_uv_daily.csv", ("date",), version_rows)
-    except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, ValueError) as exc:
+        upsert_csv(
+            args.output_dir / "pypi_0.1.1_pip_uv_daily.csv", ("date",), version_rows
+        )
+    except (
+        urllib.error.HTTPError,
+        urllib.error.URLError,
+        TimeoutError,
+        ValueError,
+    ) as exc:
         failures.append(f"ClickPy: {exc}")
 
     public: dict[str, Any] = {}
     traffic: dict[str, Any] = {"available": False, "views": None, "clones": None}
     try:
         public, _, traffic = fetch_github(repository, token)
-    except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, ValueError) as exc:
+    except (
+        urllib.error.HTTPError,
+        urllib.error.URLError,
+        TimeoutError,
+        ValueError,
+    ) as exc:
         failures.append(f"GitHub: {exc}")
 
     if traffic.get("available"):
@@ -253,7 +282,9 @@ def main() -> int:
         "traffic_available": bool(traffic.get("available")),
         "failures": failures,
     }
-    (args.output_dir / "status.json").write_text(json.dumps(status, indent=2) + "\n", encoding="utf-8")
+    (args.output_dir / "status.json").write_text(
+        json.dumps(status, indent=2) + "\n", encoding="utf-8"
+    )
     for failure in failures:
         print(f"warning: {failure}", file=sys.stderr)
     return 0
