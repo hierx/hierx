@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 title: "hierx: Hierarchical cost and interaction matrices for spatial networks"
-message: "If you use this software, please cite it as below."
+message: "If you use this software, please cite the paper (preferred-citation) and, if useful, the software itself."
 type: software
 authors:
   - given-names: Alexander
@@ -24,3 +24,18 @@ keywords:
   - accessibility
   - hierarchical matrices
   - transport modeling
+preferred-citation:
+  type: article
+  title: "HierX: Fast multi-scale distance-decay interaction on million-node networks"
+  authors:
+    - given-names: Alexander
+      family-names: Hellervik
+    - given-names: Joakim
+      family-names: Bohlin
+    - given-names: Claes
+      family-names: Andersson
+  journal: "PNAS Nexus"
+  year: 2026
+  pages: "pgag317"
+  doi: "10.1093/pnasnexus/pgag317"
+  url: "https://doi.org/10.1093/pnasnexus/pgag317"

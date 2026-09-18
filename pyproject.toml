@@ -40,6 +40,7 @@ include = ["hierx*"]
 Homepage = "https://github.com/hierx/hierx"
 Repository = "https://github.com/hierx/hierx"
 Issues = "https://github.com/hierx/hierx/issues"
+Paper = "https://doi.org/10.1093/pnasnexus/pgag317"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

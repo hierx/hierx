@@ -206,8 +206,24 @@ The hierarchical approach has three key parameters:
 
 ## Citation
 
-If you use this software in academic work, please cite using the metadata in
-[CITATION.cff](CITATION.cff):
+If you use this software in academic work, please cite the paper:
+
+> Hellervik A, Bohlin J, Andersson C (2026). HierX: Fast multi-scale
+> distance-decay interaction on million-node networks. *PNAS Nexus*, pgag317.
+> <https://doi.org/10.1093/pnasnexus/pgag317>
+
+```bibtex
+@article{hellervik2026hierx,
+  author  = {Hellervik, Alexander and Bohlin, Joakim and Andersson, Claes},
+  title   = {{HierX}: Fast multi-scale distance-decay interaction on million-node networks},
+  journal = {PNAS Nexus},
+  year    = {2026},
+  pages   = {pgag317},
+  doi     = {10.1093/pnasnexus/pgag317}
+}
+```
+
+To cite the software itself, use the metadata in [CITATION.cff](CITATION.cff):
 
 ```bibtex
 @software{hellervik2026hierarchies,
